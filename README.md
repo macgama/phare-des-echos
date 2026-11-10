@@ -21,7 +21,7 @@ Première fois seulement : dans le dépôt GitHub, va dans **Settings → Pages*
 
 ## Ouvrir le projet dans Godot (pour le modifier)
 
-1. Télécharge **Godot 4.3** (gratuit) sur [godotengine.org/download](https://godotengine.org/download). Prends la version standard, pas « .NET ».
+1. Télécharge **Godot 4.7** (gratuit) sur [godotengine.org/download](https://godotengine.org/download). Prends la version standard, pas « .NET ».
 2. Télécharge ce dépôt : bouton vert **Code → Download ZIP** sur GitHub, puis décompresse-le.
 3. Lance Godot, clique **Importer**, et choisis le fichier `project.godot` du dossier.
 4. Appuie sur **F5** (ou le bouton ▶ en haut à droite) pour lancer le jeu.
