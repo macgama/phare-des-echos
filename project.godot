@@ -1,0 +1,24 @@
+; Fichier de configuration du projet Godot.
+; Ne pas modifier à la main sauf si tu sais ce que tu fais :
+; Godot le réécrit quand tu changes les réglages dans l'éditeur.
+
+config_version=5
+
+[application]
+
+config/name="Le Phare des Échos"
+config/description="Prototype de la phase de nuit : guider les bateaux avec le rayon du phare."
+run/main_scene="res://scenes/night.tscn"
+config/features=PackedStringArray("4.3", "GL Compatibility")
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/stretch/mode="canvas_items"
+window/stretch/aspect="keep"
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"

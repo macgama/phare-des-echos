@@ -1,0 +1,63 @@
+# Construit la version web du jeu à chaque envoi sur "main"
+# et la publie sur GitHub Pages.
+name: Version web
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+env:
+  GODOT_VERSION: "4.3"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: barichello/godot-ci:4.3
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Installer les modèles d'export
+        run: |
+          mkdir -v -p ~/.local/share/godot/export_templates/
+          mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
+
+      - name: Importer le projet
+        run: timeout 180 godot --headless --import || true
+
+      - name: Test rapide (lance le jeu quelques secondes)
+        run: |
+          timeout 120 godot --headless --quit-after 600 2>&1 | tee run.log
+          if grep -E "SCRIPT ERROR|Parse Error|Failed to load script" run.log; then
+            echo "Erreur de script détectée"; exit 1
+          fi
+
+      - name: Exporter en web
+        run: |
+          mkdir -v -p build/web
+          godot --headless --export-release "Web" build/web/index.html
+          ls -la build/web
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/web
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
